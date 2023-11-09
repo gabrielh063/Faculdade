@@ -1,4 +1,4 @@
-def obter_status_aluno(media):
+def media(media):
     if media > 6:
         return "Aprovado"
     elif 4 <= media <= 6:
@@ -9,7 +9,7 @@ def obter_status_aluno(media):
 def main():
     try:
         media_aluno = float(input("Digite a média do aluno: "))
-        status = obter_status_aluno(media_aluno)
+        status = media(media_aluno)
         print(f"Status do aluno: {status}")
     except ValueError:
         print("Erro: Por favor, insira uma média válida.")
