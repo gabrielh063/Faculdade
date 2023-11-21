@@ -19,7 +19,7 @@ def inicializa_lista(quantidade=5):
         valor = rnd.randint(0,100)
         lista.append(valor)
     return lista
-
+ 
 def menu():
     print('='*10)
     print('1- iniciar lista aletoria')
