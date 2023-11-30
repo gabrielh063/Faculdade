@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Cotações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        input, button {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerenciador de Cotações</h1>
+
+    <label for="empresaInput">Nome da Empresa:</label>
+    <input type="text" id="empresaInput"><br>
+
+    <label for="simboloInput">Símbolo da Ação:</label>
+    <input type="text" id="simboloInput"><br>
+
+    <label for="precoInput">Preço Atual:</label>
+    <input type="text" id="precoInput"><br>
+
+    <label for="variacaoInput">Variação Percentual:</label>
+    <input type="text" id="variacaoInput"><br>
+
+    <label for="volumeInput">Volume de Negociação:</label>
+    <input type="text" id="volumeInput"><br>
+
+    <button onclick="inserirCotacao()">Inserir Cotação</button>
+
+    <h2>Cotações Salvas</h2>
+    <ul id="listaCotacoes"></ul>
+
+    <script>
+        function inserirCotacao() {
+
+            var empresa = document.getElementById("empresaInput").value;
+            var simbolo = document.getElementById("simboloInput").value;
+            var preco = document.getElementById("precoInput").value;
+            var variacao = document.getElementById("variacaoInput").value;
+            var volume = document.getElementById("volumeInput").value;
+
+            if (empresa === "" || simbolo === "" || preco === "" || variacao === "" || volume === "") {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            var cotacoes = JSON.parse(localStorage.getItem("cotacoes")) || [];
+
+            cotacoes.push({
+                empresa: empresa,
+                simbolo: simbolo,
+                preco: preco,
+                variacao: variacao,
+                volume: volume
+            });
+
+            localStorage.setItem("cotacoes", JSON.stringify(cotacoes));
+
+            limparCampos();
+
+            listarCotacoes();
+        }
+
+        function listarCotacoes() {
+            var listaCotacoes = document.getElementById("listaCotacoes");
+            listaCotacoes.innerHTML = "";
+
+            var cotacoes = JSON.parse(localStorage.getItem("cotacoes")) || [];
+
+            cotacoes.forEach(function(cotacao, index) {
+                var listItem = document.createElement("li");
+                listItem.textContent = `${cotacao.empresa} - ${cotacao.simbolo} | Preço: ${cotacao.preco} | Variação: ${cotacao.variacao} | Volume: ${cotacao.volume}`;
+
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "Excluir";
+                deleteButton.onclick = function() {
+                    excluirCotacao(index);
+                };
+
+                listItem.appendChild(deleteButton);
+                listaCotacoes.appendChild(listItem);
+            });
+        }
+        function excluirCotacao(index) {
+
+            var cotacoes = JSON.parse(localStorage.getItem("cotacoes")) || [];
+
+
+            cotacoes.splice(index, 1);
+
+
+            localStorage.setItem("cotacoes", JSON.stringify(cotacoes));
+
+
+            listarCotacoes();
+        }
+        function limparCampos() {
+            document.getElementById("empresaInput").value = "";
+            document.getElementById("simboloInput").value = "";
+            document.getElementById("precoInput").value = "";
+            document.getElementById("variacaoInput").value = "";
+            document.getElementById("volumeInput").value = "";
+        }
+        listarCotacoes();
+    </script>
+</body>
+</html>
